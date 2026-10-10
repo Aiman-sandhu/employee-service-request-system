@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  EMPLOYEE
+  AGENT
+  ADMIN
+}
+
+enum Category {
+  IT
+  HR
+  FACILITY
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum RequestStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model User {
+  id        Int              @id @default(autoincrement())
+  email     String           @unique
+  password  String
+  role      Role             @default(EMPLOYEE)
+  category  Category?
+  createdAt DateTime         @default(now())
+  requests  ServiceRequest[] @relation("RequestedBy")
+  assigned  ServiceRequest[] @relation("AssignedTo")
+  comments  Comment[]
+}
+
+model ServiceRequest {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String
+  category    Category
+  priority    Priority      @default(MEDIUM)
+  status      RequestStatus @default(OPEN)
+  dueAt       DateTime
+  requesterId Int
+  assigneeId  Int?
+  requester   User          @relation("RequestedBy", fields: [requesterId], references: [id])
+  assignee    User?         @relation("AssignedTo", fields: [assigneeId], references: [id])
+  comments    Comment[]
+  createdAt   DateTime      @default(now())
+  resolvedAt  DateTime?
+}
+
+model Comment {
+  id        Int            @id @default(autoincrement())
+  requestId Int
+  userId    Int
+  text      String
+  request   ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id])
+  createdAt DateTime       @default(now())
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  entity    String
+  entityId  Int?
+  meta      Json?
+  createdAt DateTime @default(now())
+}
