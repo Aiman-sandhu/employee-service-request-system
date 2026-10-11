@@ -149,6 +149,14 @@ const assignRequest = async (req, res) => {
     if (!agent || agent.role !== "AGENT") {
       return res.status(400).json({ message: "Assignee must be an AGENT" });
     }
+
+    // yahan naya check
+    const target = await prisma.serviceRequest.findUnique({ where: { id } });
+    if (!target) return res.status(404).json({ message: "Request not found" });
+    if (agent.category !== target.category) {
+      return res.status(400).json({ message: "Agent category does not match request" });
+    }
+
     const updated = await prisma.serviceRequest.update({
       where: { id }, data: { assigneeId: agent.id },
     });
@@ -161,7 +169,6 @@ const assignRequest = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
-
 const addComment = async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -212,8 +219,19 @@ const getAuditLogs = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
-
+const listAgents = async (req, res) => {
+  try {
+    const agents = await prisma.user.findMany({
+      where: { role: "AGENT" },
+      select: { id: true, email: true, category: true },
+    });
+    return res.json(agents);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
 module.exports = {
   createRequest, listRequests, getRequest, updateStatus,
-  assignRequest, addComment, getDashboard, getAuditLogs,
+  assignRequest, addComment, getDashboard, getAuditLogs, listAgents,
 };

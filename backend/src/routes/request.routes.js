@@ -13,6 +13,7 @@ router.patch("/requests/:id/assign", authenticate, authorize("ADMIN"), c.assignR
 router.post("/requests/:id/comments", authenticate, c.addComment);
 
 router.get("/dashboard", authenticate, authorize("ADMIN"), c.getDashboard);
+router.get("/agents", authenticate, authorize("ADMIN"), c.listAgents);
 router.get("/audit-logs", authenticate, authorize("ADMIN"), c.getAuditLogs);
 
 module.exports = router;
