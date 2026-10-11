@@ -20,7 +20,7 @@ Node.js, Express, Prisma ORM, PostgreSQL (Neon), JWT, bcrypt, Zod, express-rate-
 
 ## Demo
 
-[Watch the demo video](PASTE-YOUR-DRIVE-LINK-HERE)
+[Watch the demo video](https://drive.google.com/file/d/1SjWkU-HaP7Qeq3iMjbLyLjSNKGFiBV4c/view?usp=sharing)
 
 ## Setup
 
