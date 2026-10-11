@@ -111,7 +111,7 @@ Protected routes require the header: `Authorization: Bearer <token>`
 3. Calculate `dueAt` from the priority
 4. Create the request and its audit log in one `$transaction`
 
-![Request created with SLA](docs/screenshots/request-201.png)
+![Request created with SLA](backend/docs/screenshots/request-201.png)
 
 ## Status Workflow
 
@@ -123,19 +123,19 @@ OPEN → IN_PROGRESS → RESOLVED → CLOSED
 
 Invalid jumps return `400`.
 
-![Invalid transition](docs/screenshots/workflow-400.png)
+![Invalid transition](backend/docs/screenshots/workflow-400.png)
 
 ## Access Control
 
 Employees cannot change status, and an agent cannot touch another category's requests. Both return `403`.
 
-![Employee forbidden](docs/screenshots/role-403.png)
+![Employee forbidden](backend/docs/screenshots/role-403.png)
 
 ## Dashboard
 
 Admin only: counts by status, counts by category and the number of overdue requests.
 
-![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard](backend/docs/screenshots/dashboard.png)
 
 ## Tests
 
@@ -145,12 +145,12 @@ Automated tests (Jest + Supertest) cover registration, SLA creation, validation,
 npm test
 ```
 
-![Tests passing](docs/screenshots/tests-passed.png)
+![Tests passing](backend/docs/screenshots/tests-passed.png)
 
 ## Documentation
 
-- [Requirements and acceptance criteria](docs/requirements.md)
-- [Decision log](docs/decisions.md)
+- [Requirements and acceptance criteria](backend/docs/requirements.md)
+- [Decision log](backend/docs/decisions.md)
 
 ## Security Notes
 
